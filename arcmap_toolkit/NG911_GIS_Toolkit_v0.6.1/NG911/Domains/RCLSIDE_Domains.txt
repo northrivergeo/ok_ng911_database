@@ -1,0 +1,4 @@
+Values|RCLMatch side of the road segment
+R|R
+L|L
+N|N

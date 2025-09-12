@@ -1,0 +1,10 @@
+Values|Primary street prefix type separator EXAMPLE Circle in the woods
+OF THE|OF THE
+AT|AT
+DE LAS|DE LAS
+DES|DES
+IN THE|IN THE
+TO THE|TO THE
+OF|OF
+ON THE|ON THE
+TO|TO

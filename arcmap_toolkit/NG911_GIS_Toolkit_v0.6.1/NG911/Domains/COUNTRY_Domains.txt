@@ -1,0 +1,2 @@
+Values|Country that data resides in
+US|UNITED STATES OF AMERICA

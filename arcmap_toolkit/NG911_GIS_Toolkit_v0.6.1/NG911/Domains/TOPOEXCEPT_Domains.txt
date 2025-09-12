@@ -1,0 +1,5 @@
+Values|Type of topology exception for road centerline
+DANGLE_EXCEPTION|Feature is an exception to the "Must Not Have Dangles" topology rule
+INSIDE_EXCEPTION|Feature is an exception to the "Must be Inside Discrepancy Agency  Boundary" topology rule
+BOTH_EXCEPTION|Feature is an exception to both topology rules
+NO_EXCEPTION|Feature is not an exception to the topology rules

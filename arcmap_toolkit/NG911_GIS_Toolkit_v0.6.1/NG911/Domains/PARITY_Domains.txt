@@ -1,0 +1,5 @@
+Values|The even or odd property of the road range relative to the FROM Node
+O|ODD
+E|EVEN
+B|BOTH
+Z|ZERO

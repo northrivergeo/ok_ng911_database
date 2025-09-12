@@ -1,0 +1,5 @@
+Values|Direction of travel
+B|BOTH
+FT|FROM TO
+TF|TO FROM
+N|NONE

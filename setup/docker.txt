@@ -1,0 +1,2 @@
+docker run --name=tnmapping -d -e POSTGRES_USER=rjhale -e POSTGRES_PASS=9wikufi6 -e POSTGRES_DBNAME=ok911 -e ALLOW_IP_RANGE=0.0.0.0/0 -p 5432:5432 kartoza/postgis:latest
+

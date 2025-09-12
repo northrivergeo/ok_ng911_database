@@ -1,0 +1,9 @@
+Values|Abbreviated cardinal directions used in Legacy addresses per OK standards
+N|NORTH
+S|SOUTH
+E|EAST
+W|WEST
+NE|NORTHEAST
+NW|NORTHWEST
+SE|SOUTHEAST
+SW|SOUTHWEST
