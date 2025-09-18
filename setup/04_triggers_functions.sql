@@ -86,7 +86,7 @@ CREATE TRIGGER update_address_oirid BEFORE INSERT or UPDATE
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_nguid();
 
-CREATE OR REPLACE FUNCTION ok911add.address_func_label()
+CREATE OR REPLACE FUNCTION ok911.address_func_label()
 RETURNS TRIGGER AS $$
 BEGIN
    NEW.label := initcap(concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod));  
@@ -339,6 +339,52 @@ LANGUAGE PLPGSQL;
 CREATE TRIGGER update_ems_initidate BEFORE INSERT 
     ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.ems_func_initidate();
+
+--=================================================================================================
+--esn
+--=================================================================================================
+CREATE OR REPLACE FUNCTION ok911.esn_func_nguid()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.nguid_esz = 'ESN_'||new.agency||'_'||new.id||'@'||new.agency_id;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_esn_nguid BEFORE INSERT or UPDATE
+    ON ok911.esn FOR EACH ROW EXECUTE PROCEDURE
+    ok911.esn_func_nguid();
+
+CREATE OR REPLACE FUNCTION ok911.esn_func_date()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.reveditor = current_user;
+   NEW.revdate = current_timestamp;
+   NEW.effectdate = current_timestamp;
+   NEW.expiredate = current_timestamp + interval '10 years';
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_esn_date BEFORE INSERT OR UPDATE
+    ON ok911.esn FOR EACH ROW EXECUTE PROCEDURE
+    ok911.esn_func_date();
+
+
+CREATE OR REPLACE FUNCTION ok911.esn_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_esn_initidate BEFORE INSERT 
+    ON ok911.ens FOR EACH ROW EXECUTE PROCEDURE
+    ok911.esn_func_initidate();
 
 --=================================================================================================
 --municipal_boundary

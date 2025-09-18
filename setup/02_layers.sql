@@ -315,3 +315,30 @@ create table ok911.discrepancyagency_boundary (
 	submit varchar(1) references ok911.yesno_tbl(yesno),
 	comment varchar(100)
         );
+
+
+drop table if exists ok911.esn;
+create table ok911.esn (
+    id serial primary key,
+    geom geometry (polygon, 4326),
+	discrpagid varchar(75) references ok911.agencyid_tbl(agencyid),
+	revdate timestamp,  
+	reveditor varchar(75), 
+	effectdate timestamp,  
+	expiredate timestamp,  
+	initisrce varchar(75), 
+	initidate timestamp,  
+	nguid_esz varchar(254), 
+	agency varchar(60), 
+	agency_id varchar(100) references ok911.agencyid_tbl(agencyid),
+	avcard_uri varchar(254), 
+	serviceurn varchar(50) references ok911.serviceurn_tbl(serviceurn), 
+	serviceuri varchar(254), 
+	servicenum varchar(15), 
+	country varchar(2) references ok911.country_tbl(country),
+	state varchar(2) references ok911.state_tbl(state),
+	submit varchar(1) references ok911.yesno_tbl(yesno),
+	comment varchar(100),
+	esn varchar(15), 
+	esz varchar(15)
+        );
