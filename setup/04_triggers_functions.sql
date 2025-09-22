@@ -82,7 +82,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_address_oirid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_address_oirid BEFORE INSERT
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_nguid();
 
@@ -144,7 +144,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_centerline_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_centerline_nguid BEFORE INSERT
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_nguid();
 
@@ -162,7 +162,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_psap_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_psap_nguid BEFORE INSERT
     ON ok911.psap_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.psap_func_nguid();
 
@@ -210,7 +210,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_law_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_law_nguid BEFORE INSERT 
     ON ok911.esb_law_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.law_func_nguid();
 
@@ -258,7 +258,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_fire_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_fire_nguid BEFORE INSERT
     ON ok911.esb_fire_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.fire_func_nguid();
 
@@ -305,7 +305,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_ems_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_ems_nguid BEFORE INSERT
     ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.ems_func_nguid();
 
@@ -352,7 +352,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_esn_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_esn_nguid BEFORE INSERT
     ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_nguid();
 
@@ -398,7 +398,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_muni_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_muni_nguid BEFORE INSERT
     ON ok911.municipal_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.muni_func_nguid();
 
@@ -416,7 +416,7 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_muni_date BEFORE INSERT OR UPDATE
-    ON ok911.muni_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ON ok911.municipal_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.muni_func_date();
 
 
@@ -430,7 +430,7 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_muni_initidate BEFORE INSERT 
-    ON ok911.muni_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ON ok911.municipal_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.muni_func_initidate();
 
 --=================================================================================================
@@ -445,7 +445,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_dscbound_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_dscbound_nguid BEFORE INSERT
     ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.dscbound_func_nguid();
 
