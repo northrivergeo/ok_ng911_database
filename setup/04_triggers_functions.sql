@@ -8,7 +8,7 @@
  CREATE OR REPLACE FUNCTION ok911.address_func_discrpagid()
  RETURNS TRIGGER AS $$
  BEGIN
-    NEW.discrpagid := (select discrpagid from ok911.esb_psap_boundary where st_within(new.geom, geom));
+    NEW.discrpagid := (select discrpagid from ok911.psap_boundary where st_within(new.geom, geom));
     RETURN NEW;
  END;
  $$
@@ -45,7 +45,7 @@ CREATE TRIGGER update_address_date BEFORE INSERT OR UPDATE
  CREATE OR REPLACE FUNCTION ok911.address_func_agency_id()
  RETURNS TRIGGER AS $$
  BEGIN
-    NEW.agency_id := (select agency_id from ok911.esb_psap_boundary where st_within(new.geom, geom));
+    NEW.agency_id := (select agency_id from ok911.psap_boundary where st_within(new.geom, geom));
     RETURN NEW;
  END;
  $$
@@ -353,7 +353,7 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_esn_nguid BEFORE INSERT or UPDATE
-    ON ok911.esn FOR EACH ROW EXECUTE PROCEDURE
+    ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_nguid();
 
 CREATE OR REPLACE FUNCTION ok911.esn_func_date()
@@ -369,7 +369,7 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_esn_date BEFORE INSERT OR UPDATE
-    ON ok911.esn FOR EACH ROW EXECUTE PROCEDURE
+    ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_date();
 
 
@@ -383,7 +383,7 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_esn_initidate BEFORE INSERT 
-    ON ok911.ens FOR EACH ROW EXECUTE PROCEDURE
+    ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_initidate();
 
 --=================================================================================================
@@ -432,4 +432,51 @@ LANGUAGE PLPGSQL;
 CREATE TRIGGER update_muni_initidate BEFORE INSERT 
     ON ok911.muni_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.muni_func_initidate();
+
+--=================================================================================================
+--discrepancyagency_boundary
+--=================================================================================================
+CREATE OR REPLACE FUNCTION ok911.dscbound_func_nguid()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.nguid_disc = 'discrepancyagency_boundary_'||new.agency||'_'||new.id||'@'||new.agency_id;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_dscbound_nguid BEFORE INSERT or UPDATE
+    ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.dscbound_func_nguid();
+
+
+CREATE OR REPLACE FUNCTION ok911.discbound_func_date()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.reveditor = current_user;
+   NEW.revdate = current_timestamp;
+   NEW.effectdate = current_timestamp;
+   NEW.expiredate = current_timestamp + interval '10 years';
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_dscbound_date BEFORE INSERT OR UPDATE
+    ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.discbound_func_date();
+
+
+CREATE OR REPLACE FUNCTION ok911.discbound_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_dscbound_initidate BEFORE INSERT 
+    ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.discbound_func_initidate();
 
