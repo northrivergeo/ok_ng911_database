@@ -82,7 +82,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_address_oirid BEFORE INSERT
+CREATE TRIGGER update_address_nguid BEFORE INSERT
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_nguid();
 
@@ -148,6 +148,18 @@ CREATE TRIGGER update_centerline_nguid BEFORE INSERT
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_nguid();
 
+CREATE OR REPLACE FUNCTION ok911.centerline_func_label()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.label := initcap(concat_ws( ' ', new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod));
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_centerline_label BEFORE insert or update
+    ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
+    ok911.centerline_func_label();
 
 
 --=================================================================================================
@@ -341,7 +353,7 @@ CREATE TRIGGER update_ems_initidate BEFORE INSERT
     ok911.ems_func_initidate();
 
 --=================================================================================================
---esn
+--esz_boundary
 --=================================================================================================
 CREATE OR REPLACE FUNCTION ok911.esn_func_nguid()
 RETURNS TRIGGER AS $$
