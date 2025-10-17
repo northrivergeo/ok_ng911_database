@@ -59,7 +59,7 @@ create table ok911.address_point (
     lgcysufdir varchar(2) references ok911.lgcypredir_tbl(lgcypredir), 
     fulladdr varchar(100), 
     fullname varchar(50), 
-    psapg varchar(25), 
+    psap varchar(25), 
     placement varchar(25) references ok911.placement_tbl(placement),
     initisrce varchar(75), 
     initidate timestamp,  

@@ -267,7 +267,7 @@ CREATE TRIGGER update_law_initidate BEFORE INSERT
 CREATE OR REPLACE FUNCTION ok911.fire_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
-   NEW.nguid_fire = 'ESB_FIRE_BOUNDARY'||new.id||'@'||new.agency_id;
+   NEW.nguid_fire = 'ESB_FIRE_BOUNDARY_'||new.id||'@'||new.agency_id;
    RETURN NEW;
 END;
 $$
