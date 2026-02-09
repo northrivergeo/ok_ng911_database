@@ -161,7 +161,7 @@ $$
 LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_centerline_label BEFORE insert or update
-    ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
+    ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_label();
 
 
