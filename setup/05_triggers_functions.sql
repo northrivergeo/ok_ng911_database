@@ -5,6 +5,23 @@
 --address_point
 --update discrpagid
 
+CREATE OR REPLACE FUNCTION ok911.address_func_esn()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.esn := (select esn from ok911.esz_boundary where st_within(new.geom, geom));
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+
+DROP TRIGGER IF EXISTS update_address_esn on tn911.address_points;
+CREATE TRIGGER update_address_esn
+BEFORE insert or update
+    ON ok911.address_points FOR EACH ROW
+    EXECUTE PROCEDURE
+    ok911.address_func_esn();
+
  CREATE OR REPLACE FUNCTION ok911.address_func_discrpagid()
  RETURNS TRIGGER AS $$
  BEGIN
@@ -24,7 +41,6 @@ DROP TRIGGER IF EXISTS update_centerline_nguid ON ok911.road_centerline;
 
 --address_point
 --Revdate and reveditor 
-
 CREATE OR REPLACE FUNCTION ok911.address_func_date()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -40,6 +56,21 @@ LANGUAGE PLPGSQL;
 CREATE TRIGGER update_address_date BEFORE INSERT OR UPDATE
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_date();
+
+--address_point
+--initidate
+CREATE OR REPLACE FUNCTION ok911.address_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_address_initidate BEFORE INSERT
+    ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
+    ok911.address_func_initidate();
 
 
 --address_point
@@ -91,7 +122,9 @@ CREATE TRIGGER update_address_nguid BEFORE INSERT OR UPDATE
 CREATE OR REPLACE FUNCTION ok911.address_func_label()
 RETURNS TRIGGER AS $$
 BEGIN
-   NEW.label := initcap(concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod));  
+   NEW.label := initcap(concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep,   new.street, new.streettype, new.sufdir, new.sufmod, new.bldgname, new.bldgunit, new.room));  
+   NEW.fulladdr := concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod, new.bldgname, new.bldgunit, new.room);  
+   NEW.fullname := concat_ws( ' ', new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod);  
    RETURN NEW;
 END;
 $$
@@ -106,6 +139,22 @@ CREATE TRIGGER update_address_label BEFORE insert or update
 --=================================================================================================
 --centerline
 --=================================================================================================
+
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.centerline_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_centerline_initidate BEFORE INSERT
+    ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
+    ok911.centerline_func_initidate();
+
+
 CREATE OR REPLACE FUNCTION ok911.cent_func_date()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -164,10 +213,38 @@ CREATE TRIGGER update_centerline_label BEFORE insert or update
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_label();
 
+CREATE OR REPLACE FUNCTION ok911.centerline_func_fullname()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.fullname := initcap(concat_ws( ' ', new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod));
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_centerline_fullname BEFORE insert or update
+    ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
+    ok911.centerline_func_fullname();
+
+
 
 --=================================================================================================
 --psap_boundary
 --=================================================================================================
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.psap_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_psap_initidate BEFORE INSERT
+    ON ok911.psap_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.psap_func_initidate();
+
 CREATE OR REPLACE FUNCTION ok911.psap_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -216,6 +293,20 @@ CREATE TRIGGER update_psap_initidate BEFORE INSERT
 --=================================================================================================
 --esb_law
 --=================================================================================================
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.law_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_law_initidate BEFORE INSERT
+    ON ok911.esb_law_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.law_func_initidate();
+
 CREATE OR REPLACE FUNCTION ok911.law_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -264,6 +355,20 @@ CREATE TRIGGER update_law_initidate BEFORE INSERT
 --=================================================================================================
 --esb_fire
 --=================================================================================================
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.fire_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_fire_initidate BEFORE INSERT
+    ON ok911.esb_fire_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.fire_func_initidate();
+
 CREATE OR REPLACE FUNCTION ok911.fire_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -311,6 +416,20 @@ CREATE TRIGGER update_fire_initidate BEFORE INSERT
 --=================================================================================================
 --esb_ems
 --=================================================================================================
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.ems_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_ems_initidate BEFORE INSERT
+    ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.ems_func_initidate();
+
 CREATE OR REPLACE FUNCTION ok911.ems_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -358,6 +477,20 @@ CREATE TRIGGER update_ems_initidate BEFORE INSERT
 --=================================================================================================
 --esz_boundary
 --=================================================================================================
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.esn_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_esn_initidate BEFORE INSERT
+    ON ok911.esn_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.esn_func_initidate();
+
 CREATE OR REPLACE FUNCTION ok911.esn_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -451,6 +584,20 @@ CREATE TRIGGER update_esn_initidate BEFORE INSERT
 --=================================================================================================
 --discrepancyagency_boundary
 --=================================================================================================
+--set the initidate
+CREATE OR REPLACE FUNCTION ok911.discrp_func_initidate()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.initidate = current_timestamp;
+   RETURN NEW;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_discrp_initidate BEFORE INSERT
+    ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
+    ok911.discrp_func_initidate();
+
 CREATE OR REPLACE FUNCTION ok911.dscbound_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
