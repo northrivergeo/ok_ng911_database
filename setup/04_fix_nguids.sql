@@ -18,15 +18,15 @@ alter table ok911.address_point alter column id set default nextval('ok911.addre
 --###############################
 
 alter table ok911.road_centerline add column tempid integer;
-update ok911.road_centerline set tempid  = split_part(nguid_rdcl, '_', 2)::int;
+update ok911.road_centerline set tempid  = regexp_substr("nguid_rdcl", '(\d+)')::int;
 alter table ok911.road_centerline drop column id;
 alter table ok911.road_centerline rename tempid to id;
 alter table ok911.road_centerline add primary key (id);
-create sequence ok911.road_centerline;
+create sequence ok911.road_centerline_idpk_seq;
 alter sequence ok911.road_centerline_idpk_seq owner to <owner>;
-alter sequence ok911.road_centerline_idpk_seq owned by tn911.centerlines.ogc_fid;
+alter sequence ok911.road_centerline_idpk_seq owned by ok911.road_centerline.id;
 SELECT setval(pg_get_serial_sequence('ok911.road_centerline', 'id'), coalesce(max(id),0) + 1, false) FROM ok911.road_centerline;
-alter table ok911.road_centerline alter column ogc_fid set default nextval('ok911.road_centerline_idpk_seq');
+alter table ok911.road_centerline alter column id set default nextval('ok911.road_centerline_idpk_seq');
 
 --###############################
 --#Sync Primary key with nguid_psap

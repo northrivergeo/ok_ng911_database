@@ -15,7 +15,7 @@ $$
 LANGUAGE PLPGSQL;
 
 
-DROP TRIGGER IF EXISTS update_address_esn on tn911.address_points;
+DROP TRIGGER IF EXISTS update_address_esn on ok911.address_point;
 CREATE TRIGGER update_address_esn
 BEFORE insert or update
     ON ok911.address_points FOR EACH ROW
@@ -32,7 +32,6 @@ BEFORE insert or update
 LANGUAGE PLPGSQL;
 
 DROP TRIGGER IF EXISTS update_centerline_nguid ON ok911.road_centerline;
-
  CREATE TRIGGER update_address_discrpagid
  BEFORE insert or update
      ON ok911.address_point FOR EACH ROW
@@ -53,6 +52,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_address_date on OK911.address_point
 CREATE TRIGGER update_address_date BEFORE INSERT OR UPDATE
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_date();
@@ -68,6 +68,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_address_initdate on OK911.address_point
 CREATE TRIGGER update_address_initidate BEFORE INSERT
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_initidate();
@@ -84,6 +85,7 @@ CREATE TRIGGER update_address_initidate BEFORE INSERT
  $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_address_agency_id on OK911.address_point
 CREATE TRIGGER update_address_agency_id BEFORE insert or update
      ON ok911.address_point FOR EACH ROW
      EXECUTE PROCEDURE
@@ -101,6 +103,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_address_location on OK911.address_point
 CREATE TRIGGER update_address_location BEFORE insert or update
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_location();
@@ -115,6 +118,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_address_nguid on OK911.address_point
 CREATE TRIGGER update_address_nguid BEFORE INSERT OR UPDATE
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_nguid();
@@ -122,7 +126,7 @@ CREATE TRIGGER update_address_nguid BEFORE INSERT OR UPDATE
 CREATE OR REPLACE FUNCTION ok911.address_func_label()
 RETURNS TRIGGER AS $$
 BEGIN
-   NEW.label := initcap(concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep,   new.street, new.streettype, new.sufdir, new.sufmod, new.bldgname, new.bldgunit, new.room));  
+   NEW.label := initcap(concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep,   new.street, new.streettype, new.sufdir, new.sufmod));  
    NEW.fulladdr := concat_ws( ' ', new.addpre, new.address, new.addsuf, new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod, new.bldgname, new.bldgunit, new.room);  
    NEW.fullname := concat_ws( ' ', new.predir, new.pretype, new.pretypesep, new.street, new.streettype, new.sufdir, new.sufmod);  
    RETURN NEW;
@@ -130,6 +134,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_address_label on OK911.address_point
 CREATE TRIGGER update_address_label BEFORE insert or update
     ON ok911.address_point FOR EACH ROW EXECUTE PROCEDURE
     ok911.address_func_label();
@@ -150,6 +155,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_centerline_initdate on OK911.road_centerline
 CREATE TRIGGER update_centerline_initidate BEFORE INSERT
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_initidate();
@@ -167,7 +173,8 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_cent_date BEFORE INSERT OR UPDATE
+DROP TRIGGER IF EXISTS update_centerline_date on OK911.road_centerline
+CREATE TRIGGER update_centerline_date BEFORE INSERT OR UPDATE
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.cent_func_date();
 
@@ -181,7 +188,8 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_roadlength BEFORE INSERT OR UPDATE
+DROP TRIGGER IF EXISTS update_centerline_length on OK911.road_centerline
+CREATE TRIGGER update_centerline_length BEFORE INSERT OR UPDATE
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.cent_func_roadlength();
 
@@ -196,7 +204,7 @@ $$
 LANGUAGE PLPGSQL;
 
 DROP TRIGGER IF EXISTS update_centerline_nguid ON ok911.road_centerline;
-CREATE TRIGGER update_centerline_nguid BEFORE INSERT or UPDATE
+CREATE TRIGGER update_centerline_nguid BEFORE INSERT OR UPDATE
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_nguid();
 
@@ -209,6 +217,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_centerline_label on OK911.road_centerline
 CREATE TRIGGER update_centerline_label BEFORE insert or update
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_label();
@@ -222,6 +231,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_centerline_fullname on OK911.road_centerline
 CREATE TRIGGER update_centerline_fullname BEFORE insert or update
     ON ok911.road_centerline FOR EACH ROW EXECUTE PROCEDURE
     ok911.centerline_func_fullname();
@@ -241,6 +251,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_psap_initdate on OK911.psap_boundary
 CREATE TRIGGER update_psap_initidate BEFORE INSERT
     ON ok911.psap_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.psap_func_initidate();
@@ -254,6 +265,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_psap_nguid on OK911.psap_boundary
 CREATE TRIGGER update_psap_nguid BEFORE INSERT OR UPDATE
     ON ok911.psap_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.psap_func_nguid();
@@ -271,6 +283,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_psap_date on OK911.psap_boundary
 CREATE TRIGGER update_psap_date BEFORE INSERT OR UPDATE
     ON ok911.psap_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.psap_func_date();
@@ -285,6 +298,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_psap_initdate on OK911.psap_boundary
 CREATE TRIGGER update_psap_initidate BEFORE INSERT 
     ON ok911.psap_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.psap_func_initidate();
@@ -303,6 +317,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_law_initdate on OK911.esb_law_boundary
 CREATE TRIGGER update_law_initidate BEFORE INSERT
     ON ok911.esb_law_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.law_func_initidate();
@@ -316,6 +331,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_law_nguid on OK911.esb_law_boundary
 CREATE TRIGGER update_law_nguid BEFORE INSERT OR UPDATE
     ON ok911.esb_law_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.law_func_nguid();
@@ -333,10 +349,10 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_law_date on OK911.esb_law_boundary
 CREATE TRIGGER update_law_date BEFORE INSERT OR UPDATE
     ON ok911.esb_law_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.law_func_date();
-
 
 CREATE OR REPLACE FUNCTION ok911.law_func_initidate()
 RETURNS TRIGGER AS $$
@@ -347,6 +363,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_law_initdate on OK911.esb_law_boundary
 CREATE TRIGGER update_law_initidate BEFORE INSERT 
     ON ok911.esb_law_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.law_func_initidate();
@@ -365,6 +382,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_fire_initdate on OK911.esb_fire_boundary
 CREATE TRIGGER update_fire_initidate BEFORE INSERT
     ON ok911.esb_fire_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.fire_func_initidate();
@@ -378,6 +396,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_fire_nguid on OK911.esb_fire_boundary
 CREATE TRIGGER update_fire_nguid BEFORE INSERT OR UPDATE
     ON ok911.esb_fire_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.fire_func_nguid();
@@ -395,7 +414,8 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_law_date BEFORE INSERT OR UPDATE
+DROP TRIGGER IF EXISTS update_fire_nguid on OK911.esb_fire_boundary
+CREATE TRIGGER update_fire_date BEFORE INSERT OR UPDATE
     ON ok911.esb_fire_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.fire_func_date();
 
@@ -409,6 +429,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_fire_initdate on OK911.esb_fire_boundary
 CREATE TRIGGER update_fire_initidate BEFORE INSERT 
     ON ok911.esb_fire_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.fire_func_initidate();
@@ -416,20 +437,6 @@ CREATE TRIGGER update_fire_initidate BEFORE INSERT
 --=================================================================================================
 --esb_ems
 --=================================================================================================
---set the initidate
-CREATE OR REPLACE FUNCTION ok911.ems_func_initidate()
-RETURNS TRIGGER AS $$
-BEGIN
-   NEW.initidate = current_timestamp;
-   RETURN NEW;
-END;
-$$
-LANGUAGE PLPGSQL;
-
-CREATE TRIGGER update_ems_initidate BEFORE INSERT
-    ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
-    ok911.ems_func_initidate();
-
 CREATE OR REPLACE FUNCTION ok911.ems_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -439,6 +446,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_ems_nguid on OK911.esb_ems_boundary
 CREATE TRIGGER update_ems_nguid BEFORE INSERT OR UPDATE
     ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.ems_func_nguid();
@@ -456,6 +464,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_ems_date on OK911.esb_ems_boundary
 CREATE TRIGGER update_ems_date BEFORE INSERT OR UPDATE
     ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.ems_func_date();
@@ -470,6 +479,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_ems_initdate on OK911.esb_ems_boundary
 CREATE TRIGGER update_ems_initidate BEFORE INSERT 
     ON ok911.esb_ems_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.ems_func_initidate();
@@ -487,8 +497,9 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_esn_initidate BEFORE INSERT
-    ON ok911.esn_boundary FOR EACH ROW EXECUTE PROCEDURE
+DROP TRIGGER IF EXISTS update_esn_initdate on OK911.esn_boundary
+CREATE TRIGGER update_esz_initidate BEFORE INSERT
+    ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_initidate();
 
 CREATE OR REPLACE FUNCTION ok911.esn_func_nguid()
@@ -500,6 +511,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_esn_nguid on OK911.esn_boundary
 CREATE TRIGGER update_esn_nguid BEFORE INSERT OR UPDATE
     ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_nguid();
@@ -516,6 +528,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_esn_date on OK911.esn_boundary
 CREATE TRIGGER update_esn_date BEFORE INSERT OR UPDATE
     ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_date();
@@ -530,6 +543,7 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
+DROP TRIGGER IF EXISTS update_esn_initdate on OK911.esn_boundary
 CREATE TRIGGER update_esn_initidate BEFORE INSERT 
     ON ok911.esz_boundary FOR EACH ROW EXECUTE PROCEDURE
     ok911.esn_func_initidate();
@@ -584,21 +598,7 @@ CREATE TRIGGER update_esn_initidate BEFORE INSERT
 --=================================================================================================
 --discrepancyagency_boundary
 --=================================================================================================
---set the initidate
-CREATE OR REPLACE FUNCTION ok911.discrp_func_initidate()
-RETURNS TRIGGER AS $$
-BEGIN
-   NEW.initidate = current_timestamp;
-   RETURN NEW;
-END;
-$$
-LANGUAGE PLPGSQL;
-
-CREATE TRIGGER update_discrp_initidate BEFORE INSERT
-    ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
-    ok911.discrp_func_initidate();
-
-CREATE OR REPLACE FUNCTION ok911.dscbound_func_nguid()
+CREATE OR REPLACE FUNCTION ok911.discrp_func_nguid()
 RETURNS TRIGGER AS $$
 BEGIN
    NEW.nguid_disc = 'DISCREPANCYAGENCY_BOUNDARY_'||new.id||'@'||new.agency_id;
@@ -607,12 +607,13 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_dscbound_nguid BEFORE INSERT OR UPDATE
+DROP TRIGGER IF EXISTS update_discrp_nguid on OK911.discrepancyagency_boundary
+CREATE TRIGGER update_discrp_nguid BEFORE INSERT OR UPDATE
     ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
-    ok911.dscbound_func_nguid();
+    ok911.discrp_func_nguid();
 
 
-CREATE OR REPLACE FUNCTION ok911.discbound_func_date()
+CREATE OR REPLACE FUNCTION ok911.discrp_func_date()
 RETURNS TRIGGER AS $$
 BEGIN
    NEW.reveditor = current_user;
@@ -624,12 +625,13 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_dscbound_date BEFORE INSERT OR UPDATE
+DROP TRIGGER IF EXISTS update_discrp_date on OK911.discrepancyagency_boundary
+CREATE TRIGGER update_discrp_date BEFORE INSERT OR UPDATE
     ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
-    ok911.discbound_func_date();
+    ok911.discrp_func_initdate();
 
 
-CREATE OR REPLACE FUNCTION ok911.discbound_func_initidate()
+CREATE OR REPLACE FUNCTION ok911.discrp_func_initidate()
 RETURNS TRIGGER AS $$
 BEGIN
    NEW.initidate = current_timestamp;
@@ -638,7 +640,8 @@ END;
 $$
 LANGUAGE PLPGSQL;
 
-CREATE TRIGGER update_dscbound_initidate BEFORE INSERT 
+DROP TRIGGER IF EXISTS update_discrp_initdate on OK911.discrepancyagency_boundary
+CREATE TRIGGER update_discrp_initidate BEFORE INSERT 
     ON ok911.discrepancyagency_boundary FOR EACH ROW EXECUTE PROCEDURE
-    ok911.discbound_func_initidate();
+    ok911.discrp_func_initidate();
 
